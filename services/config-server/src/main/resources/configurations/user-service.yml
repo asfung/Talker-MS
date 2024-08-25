@@ -1,0 +1,21 @@
+server:
+  port: 8066
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/user-ms-talker
+    username: paung
+    password: paung
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+#    database-platform: org.hibernate.dialect.mysqldialect
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create
+    show-sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace

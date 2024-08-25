@@ -1,0 +1,8 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: posts-service
+application:
+  config:
+    user-url: http://localhost:8066/api/v1/auth

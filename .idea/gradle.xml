@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/config-server" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/config-server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/discovery" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/discovery" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/gateway" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/gateway" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/posts" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/posts" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/product" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/product" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/product-third-party" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/product-third-party" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/user" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/services/user" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

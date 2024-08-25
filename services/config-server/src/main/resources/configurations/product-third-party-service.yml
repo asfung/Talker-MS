@@ -1,0 +1,5 @@
+server:
+  port: 8051
+#application:
+#  config:
+#    product-url: http://localhost:8222/api/v1/products
