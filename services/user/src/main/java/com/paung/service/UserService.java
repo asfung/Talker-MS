@@ -26,10 +26,11 @@ public class UserService {
   @Autowired
   private JwtService jwtService;
 
-  public String saveUser(User user) {
+  public User saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     userRepository.save(user);
-    return "user added to table";
+//    return "user added to table";
+    return user;
   }
 
   public AccountProfileResponse getAccount(String userId) {

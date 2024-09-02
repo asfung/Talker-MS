@@ -17,6 +17,7 @@ public class User {
   @Id
   @ULIDGenerated
   private String user_id;
+  @Column(unique = true)
   private String username;
   private String email;
   private String password;

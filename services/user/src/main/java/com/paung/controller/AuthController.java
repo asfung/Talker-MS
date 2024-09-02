@@ -27,8 +27,9 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public String addNewUser(@RequestBody User user) {
+  public User addNewUser(@RequestBody User user) {
     return service.saveUser(user);
+//    return ResponseEntity.ok(user);
   }
 
   @PostMapping("/token")
