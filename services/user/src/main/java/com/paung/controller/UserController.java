@@ -1,15 +1,14 @@
 package com.paung.controller;
 
-import com.paung.config.CustomUserDetailsService;
 import com.paung.entity.User;
 import com.paung.entity.UserProfile;
 import com.paung.repository.UserRepository;
 import com.paung.response.AccountProfileResponse;
 import com.paung.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +24,8 @@ public class UserController {
   private UserService userService;
   @Autowired
   private UserRepository userRepository;
-  @Autowired
-  private CustomUserDetailsService customUserDetailsService;
+//  @Autowired
+//  private CustomUserDetailsService customUserDetailsService;
 
   @GetMapping
   String Index(){
@@ -54,9 +53,24 @@ public class UserController {
     return userRepository.findAll();
   }
 
-  @GetMapping("/info/{username}")
-  UserDetails userInfo(@PathVariable("username") String username){
-    return customUserDetailsService.loadUserByUsername(username);
+//  @GetMapping("/info/{username}")
+//  UserDetails userInfo(@PathVariable("username") String username){
+//    return customUserDetailsService.loadUserByUsername(username);
+//  }
+
+//  @GetMapping("/me/info")
+//  public ResponseEntity<User> authenticatedUser() {
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    User currentUser = (User) authentication.getPrincipal();
+//    return ResponseEntity.ok(currentUser);
+//  }
+
+  @GetMapping("/me/info")
+  public ResponseEntity<User> authenticatedUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) authentication.getPrincipal();
+//    return ResponseEntity.ok(authentication);
+    return ResponseEntity.ok(currentUser);
   }
 
 

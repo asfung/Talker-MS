@@ -38,6 +38,7 @@ public class AuthController {
     if (authenticate.isAuthenticated()) {
       String token =  service.generateToken(authRequest.getUsername());
       return new TokenMapper(token);
+//      return authenticate;
     } else {
       throw new RuntimeException("invalid access");
     }
