@@ -1,0 +1,11 @@
+server:
+  port: 8044
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      host: localhost
+      username: paung
+      password: paung
+      database: local
+      port: 27017
