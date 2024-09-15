@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 mongodb/data
+src/main/resources/application.yml
