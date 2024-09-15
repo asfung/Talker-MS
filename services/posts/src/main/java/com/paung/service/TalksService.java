@@ -33,6 +33,11 @@ public class TalksService {
     return talks;
   }
 
+  public Talks createTalks(Talks talks){
+    return talksRepository.save(talks);
+  }
+
+
   public List<ReplyTalksItemResponse> getReplies() {
     List<Talks> replies = talksRepository.replyTalkItem();
     List<ReplyTalksItemResponse> responses = new ArrayList<>();

@@ -1,12 +1,11 @@
 package com.paung.controller;
 
 import cn.hutool.core.lang.Snowflake;
+import com.paung.entity.Talks;
 import com.paung.service.TalksService;
 import com.paung.talks.ReplyTalksItemResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +15,19 @@ import java.util.List;
 public class TalksController {
 
   private final TalksService talksService;
+
+
+
+  @PostMapping
+  public Talks createTalk(@RequestBody Talks talks){
+    var user_id = talks.getUser_id();
+    var parent_talk_id = talks.getParentTalk();
+    if(user_id != null && parent_talk_id != null){
+      return talksService.createTalkerForParentTalkId(talks.getParentTalk(), talks.getUser_id(), talks.getContent());
+    }else{
+      return talksService.createTalks(talks);
+    }
+  }
 
   @GetMapping("/test")
   public String heloWorld(){

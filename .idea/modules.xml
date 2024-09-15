@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/posts.main.iml" filepath="$PROJECT_DIR$/.idea/modules/posts.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product-third-party.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product-third-party.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/product.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/storage.main.iml" filepath="$PROJECT_DIR$/.idea/modules/storage.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user.main.iml" />
     </modules>
   </component>

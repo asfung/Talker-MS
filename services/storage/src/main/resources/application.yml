@@ -3,3 +3,8 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
     name: storage-service
+application:
+  config:
+    supabase-storage-url: https://zchajthzhlhzctddfjaz.supabase.co/storage/v1/object/
+    supabase-storage_bucket-url: https://zchajthzhlhzctddfjaz.supabase.co/storage/v1/object/storage/
+    supabase-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjaGFqdGh6aGxoemN0ZGRmamF6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyNTQxNzAxNCwiZXhwIjoyMDQwOTkzMDE0fQ.WBFyS8KgoF6Q1yZ-YVNrFaUD862rJNUeVD6bftX_3pY

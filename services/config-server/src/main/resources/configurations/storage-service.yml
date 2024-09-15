@@ -7,5 +7,5 @@ spring:
       host: localhost
       username: paung
       password: paung
-      database: local
+      database: storage
       port: 27017
