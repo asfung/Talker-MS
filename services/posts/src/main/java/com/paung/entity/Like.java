@@ -26,7 +26,7 @@ public class Like {
   @JoinColumn(name = "talk_id", nullable = false, referencedColumnName = "talk_id")
   private Talks talks;
 
-  private UUID user_id;
+  private String user_id;
 
   @Column(nullable = false, updatable = false)
   @CreationTimestamp

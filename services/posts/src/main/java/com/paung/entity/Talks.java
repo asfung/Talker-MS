@@ -24,7 +24,7 @@ public class Talks {
   //  @ManyToOne
 //  @JoinColumn(name = "user_id", referencedColumnName = "user_id")
 //  private User user;
-  private UUID user_id;
+  private String user_id;
 
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;

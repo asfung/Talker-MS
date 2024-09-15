@@ -16,6 +16,6 @@ public class ReplyTalksItemResponse {
   private String talksType;
   private Timestamp createdAt;
   private String content;
-  private UUID userId;
+  private String userId;
   private ReplyTalksItemResponse replyItem;
 }

@@ -1,6 +1,7 @@
 package com.paung.service;
 
 import cn.hutool.core.lang.Snowflake;
+import com.paung.entity.Like;
 import com.paung.entity.Talks;
 import com.paung.repository.TalksRepository;
 import com.paung.talks.ReplyTalksItemResponse;
@@ -19,7 +20,7 @@ public class TalksService {
 
   private final TalksRepository talksRepository;
 
-  public Talks createTalkerForParentTalkId(Talks parentTalk, UUID user_id, String content){
+  public Talks createTalkerForParentTalkId(Talks parentTalk, String user_id, String content){
 //    UUID uuid = UUID.randomUUID();
 //    Talks parentTalk = new Talks();
 ////    parentTalk.setTalk_id(snowflake.nextIdStr());
@@ -63,6 +64,7 @@ public class TalksService {
 
     return responses;
   }
+
 
 
 
