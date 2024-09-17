@@ -3,8 +3,11 @@ package com.paung.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paung.entity.Media;
+import com.paung.entity.PhotoProfile;
 import com.paung.repository.MediaRepository;
+import com.paung.repository.PhotoProfileRepository;
 import com.paung.response.MediaResponse;
+import com.paung.response.PhotoProfileResponse;
 import okhttp3.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class MediaService {
 
   @Autowired
   private MediaRepository mediaRepository;
+  @Autowired
+  private PhotoProfileRepository photoProfileRepository;
 
   public MediaResponse uploadMedia(String post_id, MultipartFile file) throws IOException {
     Map<String, MediaType> mediaTypes = new HashMap<>();
@@ -87,6 +92,64 @@ public class MediaService {
     mediaResponse.setGenerated_name(generatedValueMedia);
 
     return mediaResponse;
+  }
+
+
+  public PhotoProfileResponse uploadMediaPhotoProfile(String user_id, MultipartFile file) throws IOException {
+    Map<String, MediaType> mediaTypes = new HashMap<>();
+    mediaTypes.put("png", MediaType.get("image/png"));
+    mediaTypes.put("jpg", MediaType.get("image/jpeg"));
+    mediaTypes.put("jpeg", MediaType.get("image/jpeg"));
+    mediaTypes.put("mp4", MediaType.get("video/mp4"));
+
+    String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+    MediaType mediaType = mediaTypes.get(fileExtension);
+
+    if (mediaType == null) {
+      throw new RuntimeException("Unsupported file type: " + fileExtension);
+    }
+
+    String generatedValueMedia = user_id + "_" + System.currentTimeMillis() + new Random().nextInt(Integer.parseInt(user_id)) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+
+    OkHttpClient client = new OkHttpClient();
+    RequestBody requestBody = new MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("file", file.getOriginalFilename(), RequestBody.create(file.getBytes(), mediaType))
+            .build();
+
+    Request request = new Request.Builder()
+            .url(SUPABASE_STORAGE_BUCKET_URL + "profile/" + generatedValueMedia)
+            .header("Authorization", "Bearer " + SUPABASE_AUTH_TOKEN)
+            .post(requestBody)
+            .build();
+
+    Response response = client.newCall(request).execute();
+    if (!response.isSuccessful()) {
+      throw new RuntimeException("Error uploading file: " + response.code());
+    }
+
+    String responseBody = response.body().string();
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = mapper.readTree(responseBody);
+
+    String responseMedia_id = jsonNode.get("Id").asText();
+    String responseKey = jsonNode.get("Key").asText();
+
+    PhotoProfile photoProfile = new PhotoProfile();
+    photoProfile.setId(UUID.randomUUID().toString());
+    photoProfile.setOrignal_name_file(file.getOriginalFilename());
+    photoProfile.setMedia_id(responseMedia_id);
+    photoProfile.setKey(responseKey);
+    photoProfile.setUser_id(user_id);
+
+    photoProfileRepository.save(photoProfile);
+
+    PhotoProfileResponse photoProfileResponse = new PhotoProfileResponse();
+    photoProfileResponse.setPhotoProfile(photoProfile);
+    photoProfileResponse.setOriginalFileName(file.getOriginalFilename());
+    photoProfileResponse.setGenerated_name(generatedValueMedia);
+
+    return photoProfileResponse;
   }
 
   public ResponseEntity<?> findByMediaId(String mediaId, String type) {

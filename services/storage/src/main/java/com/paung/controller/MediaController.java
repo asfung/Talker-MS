@@ -38,6 +38,17 @@ public class MediaController {
     return ResponseEntity.ok(mediaResponse);
   }
 
+  @PostMapping("/profile/upload")
+  public ResponseEntity<MediaResponse> uploadImagePhotoProfile(
+          @RequestParam(value = "media_id", required = false) String media_id,
+          @RequestParam(value = "key", required = false) String key,
+          @RequestParam("user_id") String user_id,
+          @RequestParam("file") MultipartFile file
+  ) throws IOException {
+    MediaResponse mediaResponse = mediaService.uploadMedia(user_id, file);
+    return ResponseEntity.ok(mediaResponse);
+  }
+
   @GetMapping("/media")
   public ResponseEntity<?> getMediaByMediaId(@RequestParam("media_id") String mediaId, @RequestParam(value = "type", required = false, defaultValue = "json") String type) {
     ResponseEntity<?> response = mediaService.findByMediaId(mediaId, type);

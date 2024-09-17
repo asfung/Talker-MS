@@ -2,4 +2,4 @@ NOTE_ANNOTATION.txt
 POSTS_note.txt
 backup
 /services/storage/mongodb/data
-/services/storage/src/main/resources/application.yml
+/services/storage/src/main/resources/**

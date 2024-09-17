@@ -29,6 +29,9 @@ public class Talks {
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
+  @Column(nullable = true)
+  private String media_id;
+
   @Column(nullable = false, updatable = false)
   @CreationTimestamp
   private Timestamp created_at;
