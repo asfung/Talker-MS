@@ -109,7 +109,7 @@ public class MediaService {
       throw new RuntimeException("Unsupported file type: " + fileExtension);
     }
 
-    String generatedValueMedia = user_id + "_" + System.currentTimeMillis() + new Random().nextInt(Integer.parseInt(user_id)) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+    String generatedValueMedia = user_id + "_" + System.currentTimeMillis() + new Random().nextInt(1000) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
 
     OkHttpClient client = new OkHttpClient();
     RequestBody requestBody = new MultipartBody.Builder()
@@ -137,7 +137,7 @@ public class MediaService {
 
     PhotoProfile photoProfile = new PhotoProfile();
     photoProfile.setId(UUID.randomUUID().toString());
-    photoProfile.setOrignal_name_file(file.getOriginalFilename());
+    photoProfile.setOriginal_name_file(file.getOriginalFilename());
     photoProfile.setMedia_id(responseMedia_id);
     photoProfile.setKey(responseKey);
     photoProfile.setUser_id(user_id);
@@ -204,6 +204,28 @@ public class MediaService {
     OkHttpClient client = new OkHttpClient();
     if (media.isPresent()) {
       String url = SUPABASE_STORAGE_URL + media.get().getKey();
+      Request request = new Request.Builder()
+              .url(url)
+              .header("Authorization", "Bearer " + SUPABASE_AUTH_TOKEN)
+              .build();
+
+      Response response = client.newCall(request).execute();
+      if (!response.isSuccessful()) {
+        throw new RuntimeException("Error uploading file: " + response.code());
+      }
+
+      return response.body().bytes();
+//      return response.getBody();
+    } else {
+      return null;
+    }
+  }
+
+  public byte[] getBinaryByUserId(String id) throws IOException {
+    Optional<PhotoProfile> photoProfile = photoProfileRepository.findFirstByUser_id(id);
+    OkHttpClient client = new OkHttpClient();
+    if (photoProfile.isPresent()) {
+      String url = SUPABASE_STORAGE_URL + photoProfile.get().getKey();
       Request request = new Request.Builder()
               .url(url)
               .header("Authorization", "Bearer " + SUPABASE_AUTH_TOKEN)

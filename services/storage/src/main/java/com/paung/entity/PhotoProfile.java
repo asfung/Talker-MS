@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PhotoProfile {
     @Id
     private String id;
-    private String orignal_name_file;
+    private String original_name_file;
 
     @Indexed(unique = true)
 //  @Field("media_id")
@@ -27,6 +27,5 @@ public class PhotoProfile {
 
     private String key;
 
-    //  @Field("post_id")
     private String user_id;
 }

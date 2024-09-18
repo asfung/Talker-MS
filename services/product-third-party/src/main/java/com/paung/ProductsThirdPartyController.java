@@ -1,5 +1,6 @@
 package com.paung;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,9 @@ public class ProductsThirdPartyController {
   private final ProductThirdPartyService productThirdPartyService;
 
   @GetMapping("/all")
-  public ResponseEntity<FullProductThirdPartyResponse> findAll(){
-    return ResponseEntity.ok(productThirdPartyService.findAll());
+  public ResponseEntity<FullProductThirdPartyResponse> findAll(HttpServletRequest request){
+    String authorizationHeader = request.getHeader("Authorization");
+    return ResponseEntity.ok(productThirdPartyService.findAll(authorizationHeader));
   }
 
 }

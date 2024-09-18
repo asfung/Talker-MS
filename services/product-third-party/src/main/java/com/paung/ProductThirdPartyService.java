@@ -14,8 +14,8 @@ public class ProductThirdPartyService {
 
   private final ProductClient productClient;
 
-  public FullProductThirdPartyResponse findAll(){
-    var originalProduct = productClient.findAllProducts();
+  public FullProductThirdPartyResponse findAll(String authorizationHeader){
+    var originalProduct = productClient.findAllProducts(authorizationHeader);
     return FullProductThirdPartyResponse.builder()
             .originalproduct(null)
             .product(originalProduct)

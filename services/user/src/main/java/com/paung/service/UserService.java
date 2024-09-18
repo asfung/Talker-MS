@@ -1,5 +1,6 @@
 package com.paung.service;
 
+import com.paung.dto.UserProfileDTO;
 import com.paung.entity.User;
 import com.paung.entity.UserProfile;
 import com.paung.exception.UserNotFoundException;
@@ -8,6 +9,8 @@ import com.paung.repository.UserProfileRepository;
 import com.paung.repository.UserRepository;
 import com.paung.response.AccountProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +42,17 @@ public class UserService {
     return new AccountProfileResponse(user, userProfile);
   }
 
-  public UserProfile fullUserData(String userId){
-    return userProfileRepository.getAccount(userId);
+//  public UserProfileDTO fullUserData(String userId){
+//    return userProfileRepository.getAccountByUserId(userId);
+//  }
+  public ResponseEntity<UserProfileDTO> fullUserData(String username){
+    UserProfileDTO userProfile = userProfileRepository.getAccountByUsername(username);
+    if(userProfile == null){
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(userProfile);
   }
+
 
   public Optional<UserProfile> findById(Long userProfileId){
     return userProfileRepository.findById(userProfileId);

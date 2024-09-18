@@ -1,10 +1,9 @@
 package com.paung.client;
 
 import com.paung.Product;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ import java.util.List;
 public interface ProductClient {
 
   @GetMapping("/all")
-  List<Product> findAllProducts();
+//  @RequestHeader("Authorization")
+  List<Product> findAllProducts(@RequestHeader("Authorization") String token);
 
 }

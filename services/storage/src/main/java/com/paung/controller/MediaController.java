@@ -2,16 +2,17 @@ package com.paung.controller;
 
 
 import com.paung.entity.Media;
+import com.paung.entity.PhotoProfile;
 import com.paung.enums.SupabaseConfig;
 import com.paung.repository.MediaRepository;
+import com.paung.repository.PhotoProfileRepository;
 import com.paung.response.MediaResponse;
+import com.paung.response.PhotoProfileResponse;
 import com.paung.service.MediaService;
+import jakarta.servlet.http.HttpServlet;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,8 @@ public class MediaController {
   private MediaService mediaService;
   @Autowired
   private MediaRepository mediaRepository;
+  @Autowired
+  private PhotoProfileRepository photoProfileRepository;
 
 
   @PostMapping("/upload")
@@ -39,14 +42,57 @@ public class MediaController {
   }
 
   @PostMapping("/profile/upload")
-  public ResponseEntity<MediaResponse> uploadImagePhotoProfile(
+  public ResponseEntity<PhotoProfileResponse> uploadImagePhotoProfile(
           @RequestParam(value = "media_id", required = false) String media_id,
           @RequestParam(value = "key", required = false) String key,
           @RequestParam("user_id") String user_id,
           @RequestParam("file") MultipartFile file
   ) throws IOException {
-    MediaResponse mediaResponse = mediaService.uploadMedia(user_id, file);
-    return ResponseEntity.ok(mediaResponse);
+    PhotoProfileResponse photoProfileResponse = mediaService.uploadMediaPhotoProfile(user_id, file);
+    return ResponseEntity.ok(photoProfileResponse);
+//    return ResponseEntity.ok(user_id.getClass().getName());
+  }
+
+
+  @PostMapping("/test/upload")
+  public ResponseEntity<List> testMultiFile(@RequestParam("files") MultipartFile[] files, HttpServlet request) {
+    String message = "";
+    try {
+      List<String> fileNames = new ArrayList<>();
+      List<MultipartFile> fileObject = new ArrayList<>();
+      Arrays.asList(files).stream().forEach(file -> {
+//        storageService.save(file);
+        fileNames.add(file.getOriginalFilename());
+        fileObject.add(file);
+      });
+
+//      message = "Uploaded the files successfully: " + fileNames;
+      return ResponseEntity.status(HttpStatus.OK).body(fileNames);
+    } catch (Exception e) {
+//      message = "Fail to upload files!";
+      List<String> error = new ArrayList<>();
+      error.add(e.toString());
+      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(error);
+    }
+  }
+
+
+  @GetMapping("/profile/media/{userId}")
+  public HttpEntity<byte[]> getBinaryPhotoProfile(@PathVariable String userId) throws IOException {
+    byte[] imageBytes = mediaService.getBinaryByUserId(userId);
+    HttpHeaders headers = new HttpHeaders();
+    PhotoProfile photoProfile = photoProfileRepository.findFirstByUser_id(userId).orElseThrow();
+    String fileExtension = FilenameUtils.getExtension(photoProfile.getOriginal_name_file());
+    MediaType mediaType = getMediaType(fileExtension);
+    headers.setContentType(mediaType);
+    headers.setContentDispositionFormData("inline", userId + "." + fileExtension);
+    return new HttpEntity<>(imageBytes, headers);
+  }
+
+  @GetMapping("/profile/{userId}")
+  public ResponseEntity<PhotoProfile> getPhotoProfile(@PathVariable String userId) throws IOException {
+    PhotoProfile photoProfile = photoProfileRepository.findFirstByUser_id(userId).orElseThrow();
+    return ResponseEntity.ok(photoProfile);
   }
 
   @GetMapping("/media")

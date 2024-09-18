@@ -1,5 +1,6 @@
 package com.paung.controller;
 
+import com.paung.dto.UserProfileDTO;
 import com.paung.entity.User;
 import com.paung.entity.UserProfile;
 import com.paung.repository.UserRepository;
@@ -44,7 +45,7 @@ public class UserController {
   }
 
   @GetMapping("/profile/{userId}")
-  UserProfile fullUserData(@PathVariable("userId") String userId){
+  ResponseEntity<UserProfileDTO> fullUserData(@PathVariable("userId") String userId){
     return userService.fullUserData(userId);
   }
 
