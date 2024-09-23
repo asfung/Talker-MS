@@ -12,7 +12,6 @@ import okhttp3.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,9 @@ public class MediaService {
   @Autowired
   private PhotoProfileRepository photoProfileRepository;
 
-  public MediaResponse uploadMedia(String post_id, MultipartFile file) throws IOException {
+  public MediaResponse uploadMedia(String talk_id, MultipartFile file) throws IOException {
+    String randUUID = UUID.randomUUID().toString();
+
     Map<String, MediaType> mediaTypes = new HashMap<>();
     mediaTypes.put("png", MediaType.get("image/png"));
     mediaTypes.put("jpg", MediaType.get("image/jpeg"));
@@ -51,7 +52,12 @@ public class MediaService {
       throw new RuntimeException("Unsupported file type: " + fileExtension);
     }
 
-    String generatedValueMedia = post_id + "_" + System.currentTimeMillis() + new Random().nextInt(Integer.parseInt(post_id)) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+//    String generatedValueMedia = null;
+//    if (talk_id != null){
+      String generatedValueMedia = randUUID +  "." + FilenameUtils.getExtension(file.getOriginalFilename());
+//    }else{
+//      generatedValueMedia = talk_id + "_" + System.currentTimeMillis() + UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+//    }
 
     OkHttpClient client = new OkHttpClient();
     RequestBody requestBody = new MultipartBody.Builder()
@@ -78,11 +84,11 @@ public class MediaService {
     String responseKey = jsonNode.get("Key").asText();
 
     Media media = new Media();
-    media.setId(UUID.randomUUID().toString());
-    media.setOrignal_name_file(file.getOriginalFilename());
+    media.setId(randUUID);
+    media.setOriginal_name_file(file.getOriginalFilename());
     media.setMedia_id(responseMedia_id);
     media.setKey(responseKey);
-    media.setPost_id(post_id);
+    media.setTalk_id(talk_id);
 
     mediaRepository.save(media);
 
@@ -243,6 +249,20 @@ public class MediaService {
     }
   }
 
+
+  public Media editToBeNewTalk(String id, String talkId) {
+    var media = mediaRepository.findById(id).get();
+    media.setTalk_id(talkId);
+    mediaRepository.save(media);
+    return media;
+  }
+
+  public List<Media> editToBeNewTalks(List<String> ids, String talkId) {
+    List<Media> medias = mediaRepository.findAllById(ids);
+    medias.forEach(media -> media.setTalk_id(talkId));
+    mediaRepository.saveAll(medias);
+    return medias;
+  }
 
 
 }

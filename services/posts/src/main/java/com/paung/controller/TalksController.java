@@ -5,6 +5,7 @@ import com.paung.entity.Talks;
 import com.paung.service.TalksService;
 import com.paung.talks.ReplyTalksItemResponse;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +36,13 @@ public class TalksController {
 
 
   @PostMapping
-  public ResponseEntity<List> createTalk(@RequestParam("user_id") String userId,
+  public ResponseEntity<Talks> createTalk(@RequestParam("user_id") String userId,
                                    @RequestParam("content") String content,
                                    @RequestParam(value = "parent_talk_id", required = false) String parentTalkId,
-                                   @RequestParam("files") MultipartFile files){
+                                   @RequestParam(value = "files", required = false) MultipartFile[] files,
+                                   HttpServletRequest request
+                                 ){
+    String token = request.getHeader("Authorization");
     List<String> fileNames = new ArrayList<>();
 
     Talks parentTalkIdReq = new Talks();
@@ -51,11 +55,13 @@ public class TalksController {
     var user_id = talks.getUser_id();
     var parent_talk_id = talks.getParentTalk();
 
-    Arrays.asList(files).stream().forEach(file -> {
-      fileNames.add(file.getOriginalFilename());
-    });
+    Talks createTalk = talksService.createTalkerForParentTalkId(parent_talk_id, user_id, content, token, files);
 
-    return ResponseEntity.ok(fileNames);
+//    Arrays.asList(files).stream().forEach(file -> {
+//      fileNames.add(file.getOriginalFilename());
+//    });
+
+    return ResponseEntity.ok(createTalk);
 //    if(user_id != null && parent_talk_id != null){
 //      return talksService.createTalkerForParentTalkId(talks.getParentTalk(), talks.getUser_id(), talks.getContent());
 //    }else{

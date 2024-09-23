@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Media {
   @Id
   private String id;
-  private String orignal_name_file;
+  private String original_name_file;
 
   @Indexed(unique = true)
 //  @Field("media_id")
@@ -28,5 +28,6 @@ public class Media {
   private String key;
 
 //  @Field("post_id")
-  private String post_id;
+//  @Indexed(unique = true)
+  private String talk_id;
 }

@@ -6,10 +6,12 @@ import com.paung.entity.PhotoProfile;
 import com.paung.enums.SupabaseConfig;
 import com.paung.repository.MediaRepository;
 import com.paung.repository.PhotoProfileRepository;
+import com.paung.request.MediaEditRequest;
 import com.paung.response.MediaResponse;
 import com.paung.response.PhotoProfileResponse;
 import com.paung.service.MediaService;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -34,12 +36,28 @@ public class MediaController {
   public ResponseEntity<MediaResponse> insertMedia(
           @RequestParam(value = "media_id", required = false) String media_id,
           @RequestParam(value = "key", required = false) String key,
-          @RequestParam("post_id") String post_id,
+          @RequestParam(value = "talk_id", required = false) String talk_id,
           @RequestParam("file") MultipartFile file
   ) throws IOException {
-    MediaResponse mediaResponse = mediaService.uploadMedia(post_id, file);
+    MediaResponse mediaResponse = mediaService.uploadMedia(talk_id, file);
     return ResponseEntity.ok(mediaResponse);
   }
+
+  @PostMapping("/edit")
+  public ResponseEntity<Media> editToBeNewTalk(
+          @RequestParam("id") String id,
+          @RequestParam("talk_id") String talk_id
+  ) {
+    Media media = mediaService.editToBeNewTalk(id, talk_id);
+    return ResponseEntity.ok(media);
+  }
+
+  @PostMapping("/edits")
+  public ResponseEntity<List<Media>> editToBeNewTalks(@RequestBody MediaEditRequest mediaEditRequest) {
+    List<Media> medias = mediaService.editToBeNewTalks(mediaEditRequest.getIds(), mediaEditRequest.getTalkId());
+    return ResponseEntity.ok(medias);
+  }
+
 
   @PostMapping("/profile/upload")
   public ResponseEntity<PhotoProfileResponse> uploadImagePhotoProfile(
@@ -55,7 +73,10 @@ public class MediaController {
 
 
   @PostMapping("/test/upload")
-  public ResponseEntity<List> testMultiFile(@RequestParam("files") MultipartFile[] files, HttpServlet request) {
+  public ResponseEntity<List> testMultiFile(@RequestParam("files") MultipartFile[] files, HttpServletRequest request) {
+    List<String> requests = new ArrayList<>();
+    requests.add(request.getHeader("Authorization"));
+
     String message = "";
     try {
       List<String> fileNames = new ArrayList<>();
@@ -120,7 +141,7 @@ public class MediaController {
     byte[] imageBytes = mediaService.getBinaryById(id);
     HttpHeaders headers = new HttpHeaders();
     Media media = mediaRepository.findById(id).orElseThrow();
-    String fileExtension = FilenameUtils.getExtension(media.getOrignal_name_file());
+    String fileExtension = FilenameUtils.getExtension(media.getOriginal_name_file());
     MediaType mediaType = getMediaType(fileExtension);
     headers.setContentType(mediaType);
     headers.setContentDispositionFormData("inline", id + "." + fileExtension);

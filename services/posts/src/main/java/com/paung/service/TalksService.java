@@ -1,6 +1,7 @@
 package com.paung.service;
 
 import cn.hutool.core.lang.Snowflake;
+import com.paung.client.StorageClient;
 import com.paung.entity.Like;
 import com.paung.entity.Talks;
 import com.paung.repository.TalksRepository;
@@ -8,9 +9,12 @@ import com.paung.talks.ReplyTalksItemResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,8 +23,10 @@ import java.util.UUID;
 public class TalksService {
 
   private final TalksRepository talksRepository;
+  private final StorageClient storageClient;
 
-  public Talks createTalkerForParentTalkId(Talks parentTalk, String user_id, String content){
+  public Talks createTalkerForParentTalkId(Talks parentTalk, String user_id, String content, String token, MultipartFile[] files){
+
 //    UUID uuid = UUID.randomUUID();
 //    Talks parentTalk = new Talks();
 ////    parentTalk.setTalk_id(snowflake.nextIdStr());
@@ -30,6 +36,16 @@ public class TalksService {
     talks.setContent(content);
     talks.setUser_id(user_id);
     talks.setParentTalk(parentTalk);
+
+//    Arrays.asList(files).stream().forEach(file -> {
+////      var uploadFile = storageClient.uploadFile(token, talks.getTalk_id(), file);
+//      storageClient.uploadFile(token, talks.getTalk_id(), file);
+//    });
+//    for(MultipartFile file : files){
+//      System.out.println(file.getOriginalFilename());
+//      storageClient.uploadFile(token, talks.getTalk_id(), file);
+//    }
+
     talksRepository.save(talks);
     return talks;
   }

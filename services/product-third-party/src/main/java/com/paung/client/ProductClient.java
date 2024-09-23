@@ -1,7 +1,10 @@
 package com.paung.client;
 
 import com.paung.Product;
+import com.paung.feign.AuthRequestInterceptor;
+import feign.RequestInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -16,3 +19,10 @@ public interface ProductClient {
   List<Product> findAllProducts(@RequestHeader("Authorization") String token);
 
 }
+
+//class AuthFeignConfig {
+//  @Bean
+//  public RequestInterceptor requestInterceptor() {
+//    return new AuthRequestInterceptor();
+//  }
+//}

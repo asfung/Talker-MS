@@ -6,3 +6,5 @@ spring:
 application:
   config:
     user-url: http://localhost:8066/api/v1/auth
+#    storage-url: http://localhost:8222/api/v1/storage
+    storage-url: http://localhost:8044/api/v1/storage
