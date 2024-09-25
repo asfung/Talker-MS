@@ -1,7 +1,6 @@
 package com.paung.repository;
 
 import com.paung.entity.Talks;
-import de.huxhorn.sulky.ulid.ULID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +27,18 @@ public interface TalksRepository extends JpaRepository<Talks, String> {
 
   @Query("SELECT t FROM Talks t WHERE t.parentTalk IS NOT NULL")
   List<Talks> replyTalkItem();
+
+
+//  @Query(
+//          value = "SELECT * FROM talks t where t.talk_id = :talkId",
+//          nativeQuery = true
+//  )
+
+  @Query(name = "getTalkById", nativeQuery = true)
+  Talks findByTalk_Id(@Param("talkId") String talkId);
+
+  @Override
+  Optional<Talks> findById(String id);
 
 //  Talks findById(String talkId);
 }

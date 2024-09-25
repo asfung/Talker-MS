@@ -4,16 +4,13 @@ import cn.hutool.core.lang.Snowflake;
 import com.paung.entity.Talks;
 import com.paung.service.TalksService;
 import com.paung.talks.ReplyTalksItemResponse;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/post")
@@ -47,6 +44,7 @@ public class TalksController {
 
     Talks parentTalkIdReq = new Talks();
     parentTalkIdReq.setTalk_id(parentTalkId);
+
 
     Talks talks = new Talks();
     talks.setUser_id(userId);
@@ -84,5 +82,12 @@ public class TalksController {
   public List<ReplyTalksItemResponse> getReplies() {
     return talksService.getReplies();
   }
+
+  @GetMapping("/{talkId}")
+  public String getPostByTalkId(@PathVariable String talkId){
+    return talksService.getPostByTalkId(talkId);
+//    return talkId.getClass().toString();
+  }
+
 
 }

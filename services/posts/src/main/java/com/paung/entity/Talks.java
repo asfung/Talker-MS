@@ -15,6 +15,28 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedNativeQuery(
+        name = "getTalkById",
+        query = "SELECT * FROM talks t where t.talk_id = :talkId",
+        resultSetMapping = "Talks"
+)
+@SqlResultSetMapping(
+        name = "Talks",
+        classes = @ConstructorResult(
+                targetClass = Talks.class,
+                columns = {
+                        @ColumnResult(name = "talk_id"),
+                        @ColumnResult(name = "user_id"),
+                        @ColumnResult(name = "content"),
+                        @ColumnResult(name = "media_id"),
+                        @ColumnResult(name = "created_at"),
+                        @ColumnResult(name = "updated_at"),
+                        @ColumnResult(name = "deleted_at"),
+//                        @ColumnResult(name = "parent_talk_id"),
+//                        @ColumnResult(name = "like_id")
+                }
+        )
+)
 public class Talks {
 
   @Id

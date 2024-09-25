@@ -35,4 +35,7 @@ public interface MediaRepository extends MongoRepository<Media, String> {
   @Query("{ post_id: ?0 }")
   List<Media> findByPost_id(String postId);
 
+  @Query("{ talk_id: ?0 }")
+  List<Media> findByTalk_id(String talkId);
+
 }

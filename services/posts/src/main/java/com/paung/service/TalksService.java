@@ -1,22 +1,14 @@
 package com.paung.service;
 
-import cn.hutool.core.lang.Snowflake;
 import com.paung.client.StorageClient;
-import com.paung.entity.Like;
 import com.paung.entity.Talks;
 import com.paung.repository.TalksRepository;
 import com.paung.talks.ReplyTalksItemResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +73,15 @@ public class TalksService {
     return responses;
   }
 
-
+  public String getPostByTalkId(String talkId) {
+    Optional<Talks> talk = talksRepository.findById(talkId);
+    if (talk.isPresent()) {
+      return talk.get().getParentTalk().getTalk_id().toString();
+//      return talk.get();
+    }
+//    return talksRepository.findById(talkId);
+    return null;
+  }
 
 
 //  public Talks updateTalk(String talkId, Talks updatedTalk) {

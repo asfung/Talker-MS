@@ -11,5 +11,5 @@ public class MediaDTO {
   private String original_name_file;
   private String media_id;
   private String key;
-  private String post_id;
+  private String talk_id;
 }

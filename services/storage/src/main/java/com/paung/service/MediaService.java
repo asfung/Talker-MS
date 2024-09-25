@@ -54,7 +54,7 @@ public class MediaService {
 
 //    String generatedValueMedia = null;
 //    if (talk_id != null){
-      String generatedValueMedia = randUUID +  "." + FilenameUtils.getExtension(file.getOriginalFilename());
+      String generatedValueMedia = new Random().nextInt() +  "." + FilenameUtils.getExtension(file.getOriginalFilename());
 //    }else{
 //      generatedValueMedia = talk_id + "_" + System.currentTimeMillis() + UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
 //    }
@@ -181,8 +181,8 @@ public class MediaService {
   }
 
 
-  public List<Media> findMediaByPostId(String post_id){
-    return mediaRepository.findByPost_id(post_id);
+  public List<Media> findMediaByTalk_Id(String talkId){
+    return mediaRepository.findByTalk_id(talkId);
   }
 
   public Media getByMediaId(String mediaId){

@@ -171,9 +171,9 @@ public class MediaController {
 
 
 
-  @GetMapping("/post/media/{postId}")
-  public List<Media> getMediaByPostId(@PathVariable String postId){
-    return mediaService.findMediaByPostId(postId);
+  @GetMapping("/post/media/{talkId}")
+  public List<Media> getMediaByPostId(@PathVariable String talkId){
+    return mediaService.findMediaByTalk_Id(talkId);
   }
 
 
